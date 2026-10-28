@@ -2,7 +2,7 @@
 
 Play **HELLDIVERS (Dive Harder Edition)** with the over-the-shoulder camera of **HELLDIVERS 2**.
 
-**[⬇ Download v1.1](https://github.com/yukiorsrs/third-person-camera-helldivers/releases/latest)**
+**[⬇ Download v1.2](https://github.com/yukiorsrs/third-person-camera-helldivers/releases/latest)**
 
 ![Shoulder camera](screenshots/01_shoulder_camera_desert.jpg)
 
@@ -47,7 +47,7 @@ The top-down view is replaced by an over-the-shoulder camera with free mouse aim
 2. Open the `ThirdPersonCamera_Installer` folder, run `ThirdPersonCamera_Installer.exe` and click **Install**.
 3. Play.
 
-No installer? Download `ThirdPersonCamera_v1.1_manual.zip` from the same release and copy its `contents` folder into your HELLDIVERS folder, replacing the 4 files. To remove it, verify the game files on Steam.
+No installer? Download `ThirdPersonCamera_v1.2_manual.zip` from the same release and copy its `contents` folder into your HELLDIVERS folder, replacing the 4 files. To remove it, verify the game files on Steam.
 
 The installer finds the game in any Steam library and closes it if it's open. It only changes your own game files and keeps a backup of every original in `Helldivers\contents\hd2cam_backup`. Run it again and click **Uninstall** to remove the mod. Verifying the game files on Steam also works.
 
