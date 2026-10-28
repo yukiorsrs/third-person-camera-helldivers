@@ -17,7 +17,7 @@ The top-down view is replaced by an over-the-shoulder camera with free mouse aim
 - Your upper body follows your aim and bullets go where you point
 - Grenades and stratagems land where you aim
 - Smoother HD2-style dive
-- A sky in the colour of each map's own fog, for every biome, time of day and the Proving Grounds, plus a starry night sky
+- A sky in the colour of each map's own fog, for every biome and time of day, plus a starry night sky
 - One-colour fog, and trees, rocks and buildings keep their full detail further away
 - Your Super Destroyer in the sky, with hellpods and orbital strikes coming from it
 - Hellpod descent camera and extraction camera
@@ -34,12 +34,16 @@ The top-down view is replaced by an over-the-shoulder camera with free mouse aim
 
 ![Ship lobby](screenshots/06_ship_lobby_wide.jpg)
 
-## What's new in v1.1
+## Changelog
 
+**v1.2**
+- Fixes for the camera and the dive
+
+**v1.1**
 - The sky now takes the colour of the map's own fog (read from the game's original settings), so sky and haze match
 - The fog has a single colour (no more whitish second fog towards the sun)
 - Trees, rocks and buildings keep their high-detail models further away, and ambient occlusion is on during play
-- The Proving Grounds and the tutorial get the same sky, fog and ship as the other maps
+- The tutorial gets the same sky, fog and ship as the other maps
 
 ## Install
 
