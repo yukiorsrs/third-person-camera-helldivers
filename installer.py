@@ -196,6 +196,37 @@ def make_night_dds(template_path, out_path, size=2048):
         f.write(trail)
 
 
+MENU_BUNDLE = "ec181385e7000cf1"
+SKY_SETS = ["city", "desert", "forest", "lava", "snow", "night", "dusk"]
+
+
+def add_mission_skies(ents, template_ents, sky_dir):
+    """Adds every mod sky (mod/sky/<name>) to the mission_start bundle, which the mod loads in every mission.
+    The dome unit, material and texture header are copied from the player's own menu bundle (not shipped)."""
+    unit = mat = tex = None
+    for e in template_ents:
+        if e[0] == TEX and e[1] == SKYTEX:
+            tex = e
+        elif e[0] == UNIT and e[1] == SKY:
+            unit = e
+        elif e[0] == MAT and e[1] == SKY:
+            mat = e
+    if not (unit and mat and tex):
+        raise ValueError("skydome not found in the menu bundle")
+    sky8, tex8 = struct.pack("<Q", SKY), struct.pack("<Q", SKYTEX)
+    for name in SKY_SETS:
+        dds = open(os.path.join(sky_dir, name + ".dds"), "rb").read()
+        u_name = murmur64a(f"mod/sky/{name}".encode())
+        t_name = murmur64a(f"mod/sky/{name}_tex".encode())
+        ents = [e for e in ents if e[1] not in (u_name, t_name)]
+        ents += [
+            [TEX, t_name, tex[2], [list(v) for v in tex[3]], [dds for _ in tex[4]]],
+            [MAT, u_name, mat[2], [list(v) for v in mat[3]], [d.replace(tex8, struct.pack("<Q", t_name)) for d in mat[4]]],
+            [UNIT, u_name, unit[2], [list(v) for v in unit[3]], [d.replace(sky8, struct.pack("<Q", u_name)) for d in unit[4]]],
+        ]
+    return ents
+
+
 def patch_sky(ents, sky_dir, sets):
     """The shared skydome texture gets the HD2 sky, and for every name in `sets` a copy of the dome is added
     (mod/sky/<name>) with that sky's texture. Mission skies must live in the biome bundles themselves: the menu
@@ -356,6 +387,12 @@ def build_one(h, info, contents, backup, data_dir, sky_dir):
         found = patch_lua(ents, os.path.join(data_dir, "lua"))
     elif info["kind"] == "render_config":
         patch_render_config(ents)
+    elif info["kind"] == "mission_sky":
+        # the dome comes from the player's own (untouched) menu bundle, checked like every other file
+        tpl = open(os.path.join(contents, MENU_BUNDLE), "rb").read()
+        if hashlib.sha256(tpl).hexdigest() != info["template_sha256"]:
+            return h, False, set()
+        ents = add_mission_skies(ents, read_entries(unpack_bundle(tpl))[1], sky_dir)
     else:
         # each biome bundle: its daytime sky plus the night and dusk/dawn skies; other bundles: shared sky only
         sets = [info["biome"], "night", "dusk"] if info.get("biome") else []
