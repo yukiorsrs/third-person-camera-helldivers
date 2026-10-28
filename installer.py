@@ -8,7 +8,7 @@ import tkinter as tk
 from tkinter import filedialog, messagebox
 
 APP_ID = "394510"
-VERSION = "1.0"
+VERSION = "1.1"
 
 
 def resource(*p):
@@ -197,7 +197,30 @@ def make_night_dds(template_path, out_path, size=2048):
 
 
 MENU_BUNDLE = "ec181385e7000cf1"
-SKY_SETS = ["city", "desert", "forest", "lava", "snow", "night", "dusk"]
+# fog-tint skies: one flat colour per (r, g, b) level with the brightest channel at full. The mod picks the one
+# closest to the level's own fog colour and sets its intensity to the fog's brightness (same levels in patch.py)
+TINT_LV = (0, 0.06, 0.18, 0.36, 0.62, 1)
+TINTS = [f"t_{r}{g}{b}" for r in range(6) for g in range(6) for b in range(6) if max(r, g, b) == 5]
+SKY_SETS = ["city", "desert", "forest", "lava", "snow", "night", "dusk"] + TINTS
+
+
+def make_tint_dds(template_path, out_path, name, size=8):
+    """Flat sky of one fog-tint colour (linear level stored as is), with its mipmaps."""
+    lv = [round(TINT_LV[int(c)] * 255) for c in name[2:]]
+    tpl = open(template_path, "rb").read()
+    head = bytearray(tpl[:128])
+    trail = tpl[128 + sum((256 >> i) ** 2 * 4 for i in range(9)):]
+    mips = size.bit_length()
+    struct.pack_into("<I", head, 12, size)
+    struct.pack_into("<I", head, 16, size)
+    struct.pack_into("<I", head, 20, size * 4)
+    struct.pack_into("<I", head, 28, mips)
+    px = bytes((lv[2], lv[1], lv[0], 255))
+    with open(out_path, "wb") as f:
+        f.write(head)
+        for i in range(mips):
+            f.write(px * (max(1, size >> i) ** 2))
+        f.write(trail)
 
 
 def add_mission_skies(ents, template_ents, sky_dir):
@@ -419,6 +442,8 @@ def install(game, log, progress):
     if not os.path.exists(os.path.join(sky_dir, "night.dds")):
         log("Gerando o ceu noturno / Building the night sky...")
         make_night_dds(os.path.join(sky_dir, "hd2.dds"), os.path.join(sky_dir, "night.dds"))
+    for t in TINTS:
+        make_tint_dds(os.path.join(sky_dir, "hd2.dds"), os.path.join(sky_dir, t + ".dds"), t)
     log(f"Instalando com {workers} nucleos / Installing on {workers} cores...")
 
     # 1) one read per file: check it is the known original, patch it and write the result next to it as a temp
