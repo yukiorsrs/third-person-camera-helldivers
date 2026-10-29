@@ -8,7 +8,7 @@ import tkinter as tk
 from tkinter import filedialog, messagebox
 
 APP_ID = "394510"
-VERSION = "1.2"
+VERSION = "1.3"
 
 
 def resource(*p):
@@ -395,16 +395,62 @@ def retry(fn, tries=20):
             time.sleep(0.5)
 
 
+def entry_key(e):
+    return f"{e[0]:016x}:{e[1]:016x}"
+
+
+def entry_hash(e):
+    return hashlib.sha256(b"".join(e[4])).hexdigest()[:24]
+
+
+def mod_script_names(data_dir):
+    return {int(f[:-4], 16) for f in os.listdir(os.path.join(data_dir, "lua"))}
+
+
+def other_mod_bundle(raw, info, ours):
+    """A script bundle another mod changed (e.g. Saber unlock): same files as the original, only scripts differ.
+    Returns (head, entries, names of the scripts the other mod changed) or None if it is not that."""
+    want = info.get("entries")
+    if not want:
+        return None
+    try:
+        head, ents = read_entries(unpack_bundle(raw))
+    except Exception:
+        return None
+    if {entry_key(e) for e in ents} != set(want):
+        return None
+    foreign = set()
+    for e in ents:
+        if entry_hash(e) != want[entry_key(e)]:
+            if e[0] != LUA:
+                return None
+            if e[1] not in ours:
+                foreign.add(e[1])
+    return head, ents, foreign
+
+
 def build_one(h, info, contents, backup, data_dir, sky_dir):
-    """Worker process: returns (name, is_known_original, scripts_placed); writes contents/<name>.hd2cam_tmp."""
+    """Worker process: returns (name, is_known_original, scripts_placed); writes contents/<name>.hd2cam_tmp.
+    For the script bundles, scripts changed by another mod are kept and the camera scripts go on top."""
     bk = os.path.join(backup, h)
-    src = bk if os.path.exists(bk) else os.path.join(contents, h)
-    if not os.path.exists(src):
-        return h, False, set()
-    raw = open(src, "rb").read()
-    if hashlib.sha256(raw).hexdigest() != info["sha256"]:
-        return h, False, set()
-    head, ents = read_entries(unpack_bundle(raw))
+    cur = os.path.join(contents, h)
+    head = ents = None
+    if info["kind"] == "lua" and os.path.exists(cur):
+        r = other_mod_bundle(open(cur, "rb").read(), info, mod_script_names(data_dir))
+        if r:
+            head, ents, _ = r
+    if ents is None:
+        src = bk if os.path.exists(bk) else cur
+        if not os.path.exists(src):
+            return h, False, set()
+        raw = open(src, "rb").read()
+        if hashlib.sha256(raw).hexdigest() != info["sha256"]:
+            r = other_mod_bundle(raw, info, mod_script_names(data_dir)) if info["kind"] == "lua" else None
+            if not r:
+                return h, False, set()
+            head, ents, _ = r
+        else:
+            head, ents = read_entries(unpack_bundle(raw))
     found = set()
     if info["kind"] == "lua":
         found = patch_lua(ents, os.path.join(data_dir, "lua"))
@@ -488,8 +534,27 @@ def uninstall(game, log, progress):
     if not os.path.isdir(backup):
         raise RuntimeError("O mod nao esta instalado / The mod is not installed.")
     files = [f for f in os.listdir(backup) if len(f) == 16]
+    orig = json.load(open(resource("data", "originals.json")))
+    ours = mod_script_names(resource("data"))
     for i, f in enumerate(files):
         progress(i / max(1, len(files)))
+        info = orig.get(f, {})
+        cur = os.path.join(contents, f)
+        if info.get("kind") == "lua" and os.path.exists(cur):
+            # keep what other mods changed in the script bundle: only the camera scripts go back to the original
+            r = other_mod_bundle(open(cur, "rb").read(), info, ours)
+            if r and r[2]:
+                head, ents, _ = r
+                back = {e[1]: e for e in read_entries(unpack_bundle(open(os.path.join(backup, f), "rb").read()))[1]
+                        if e[0] == LUA}
+                for e in ents:
+                    if e[0] == LUA and e[1] in ours and e[1] in back:
+                        e[3], e[4] = back[e[1]][3], back[e[1]][4]
+                open(cur + ".hd2cam_tmp", "wb").write(pack_bundle(write_entries(head, ents), level=1))
+                retry(lambda: os.replace(cur + ".hd2cam_tmp", cur))
+                os.remove(os.path.join(backup, f))
+                log(f"  {f}: outro mod mantido / other mod kept")
+                continue
         # a rename back into place: instant, the backup folder is removed afterwards anyway
         retry(lambda: os.replace(os.path.join(backup, f), os.path.join(contents, f)))
     log(f"  {len(files)} arquivos restaurados / files restored")
