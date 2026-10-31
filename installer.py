@@ -8,7 +8,7 @@ import tkinter as tk
 from tkinter import filedialog, messagebox
 
 APP_ID = "394510"
-VERSION = "2.0"
+VERSION = "2.1"
 
 
 def resource(*p):

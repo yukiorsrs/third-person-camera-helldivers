@@ -2,7 +2,7 @@
 
 Play **HELLDIVERS (Dive Harder Edition)** with the over-the-shoulder camera of **HELLDIVERS 2**.
 
-**[⬇ Download v2.0](https://github.com/yukiorsrs/third-person-camera-helldivers/releases/latest)**
+**[⬇ Download v2.1](https://github.com/yukiorsrs/third-person-camera-helldivers/releases/latest)**
 
 ![Shoulder camera](screenshots/01_shoulder_camera_desert.jpg)
 
@@ -65,6 +65,13 @@ Strikes keep the game's own damage: only what you see changes (the Railcannon lo
 
 ## Changelog
 
+**v2.1**
+- THIRD PERSON CONTROLS now looks and works like the game's own key binding screen
+- Controller: the binding screen no longer loops back to the Third Person Controls page
+- Ping works every time; pings and enemy names stay on their spot in the world
+- Fixed a crash when going back to the ship
+- Warning when a player with an older (or newer) version of the mod joins
+
 **v2.0**
 - First person while aiming (mouse wheel / R3), with real scopes for scoped weapons
 - Ping (Z / B): an eye on a spot, a red scope with the enemy's name on an enemy
@@ -103,7 +110,7 @@ Strikes keep the game's own damage: only what you see changes (the Railcannon lo
 2. Open the `ThirdPersonCamera_Installer` folder, run `ThirdPersonCamera_Installer.exe` and click **Install**.
 3. Play.
 
-No installer? Download `ThirdPersonCamera_v2.0_manual.zip` from the same release and copy its `contents` folder into your HELLDIVERS folder, replacing the 3 files. To remove it, verify the game files on Steam.
+No installer? Download `ThirdPersonCamera_v2.1_manual.zip` from the same release and copy its `contents` folder into your HELLDIVERS folder, replacing the 3 files. To remove it, verify the game files on Steam.
 
 The installer finds the game in any Steam library and closes it if it's open. It only changes your own game files and keeps a backup of every original in `Helldivers\contents\hd2cam_backup`. Run it again and click **Uninstall** to remove the mod. Verifying the game files on Steam also works.
 
