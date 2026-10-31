@@ -2,15 +2,19 @@
 
 Play **HELLDIVERS (Dive Harder Edition)** with the over-the-shoulder camera of **HELLDIVERS 2**.
 
-**[⬇ Download v1.5](https://github.com/yukiorsrs/third-person-camera-helldivers/releases/latest)**
+**[⬇ Download v2.0](https://github.com/yukiorsrs/third-person-camera-helldivers/releases/latest)**
 
 ![Shoulder camera](screenshots/01_shoulder_camera_desert.jpg)
 
 ## What it does
 
-The top-down view is replaced by an over-the-shoulder camera with free mouse aim, and the world was adjusted so it looks right from the ground: a real sky, your Super Destroyer above you and a few cinematic moments.
+The top-down view is replaced by an over-the-shoulder camera with free aim on mouse and controller, a first person view for aiming, pings for your squad, and the world was adjusted so it looks right from the ground: a real sky, your Super Destroyer above you and a few cinematic moments.
 
 - Shoulder camera with free mouse look and a center crosshair
+- First person while aiming, with real scopes for the Liberator, Justice, Stalwart, Marksman rifle and Railgun
+- Ping: an eye on a spot, a red scope with the enemy's name on an enemy (uses the game's own map marker)
+- Esc > THIRD PERSON CONTROLS: a separate set of buttons for third person, PRESS / HOLD / DOUBLE TAP for the main actions
+- Co-op: shows when a player with or without the mod joins
 - Aim (right mouse) brings the camera to your shoulder and zooms in
 - The camera doesn't clip through rocks and walls
 - Cameras for the mech, APC, bike, turrets and seats
@@ -33,18 +37,22 @@ The top-down view is replaced by an over-the-shoulder camera with free mouse aim
 
 ## Controls
 
+Every key and button can be changed in **Esc > THIRD PERSON CONTROLS**.
+
 | | Keyboard / mouse | Controller (HD2 layout) |
 |---|---|---|
 | Camera | Mouse | Right stick |
-| Aim (zoom) | Right mouse | LT |
+| Aim | Right mouse | LT |
+| First person (while aiming) | Mouse wheel | R3 |
 | Fire | Left mouse | RT |
+| Ping | Z | B |
 | Grenade / stratagems | game keys | RB / LB |
 | Reload, interact | game keys | X |
-| Dive / next weapon | game keys | A / Y |
-| Settings menu | F9 | L3 + R3 |
-| Camera on / off | F8 | (menu) |
+| Dive / switch weapon | game keys | A / Y |
+| Camera settings | F9 | |
+| Camera on / off | F8 | |
 
-Orbital strikes, Eagle strikes and everything else keep the game's own timing and damage: only what you see changes.
+Strikes keep the game's own damage: only what you see changes (the Railcannon lock-on range and the Orbital Strike laser speed are the only gameplay changes to strikes).
 
 ## Screenshots
 
@@ -56,6 +64,18 @@ Orbital strikes, Eagle strikes and everything else keep the game's own timing an
 ![Ship lobby](screenshots/06_ship_lobby_wide.jpg)
 
 ## Changelog
+
+**v2.0**
+- First person while aiming (mouse wheel / R3), with real scopes for scoped weapons
+- Ping (Z / B): an eye on a spot, a red scope with the enemy's name on an enemy
+- Esc > THIRD PERSON CONTROLS: a separate set of buttons for third person (keyboard and controller, in the game's own key binding screen), PRESS / HOLD / DOUBLE TAP, camera keys
+- Co-op: banner when a player with or without the mod joins; "Stay near squad" turns on for everyone when someone has no mod
+- Shot spread smaller while aiming, smaller still in first person
+- HELLDIVERS 2 hellpod descent, jump pack camera, smoother camera at any frame rate
+- Railcannon locks on to the biggest enemy near the beacon, the Orbital Strike laser chases faster, both beams come from the Super Destroyer
+- Fire from napalm, flamethrowers and incendiary grenades burns on the ground
+- Settings menu with tabs, Performance mode
+- Fixes: black sky on big maps, escort NPCs pulled out of the map, controllers whose right stick did nothing, close-range shots
 
 **v1.5**
 - Settings menu (F9, or L3 + R3 on a controller): sensitivity, FOV, camera distance, shoulder side and height, camera on / off key (F8), reset to default
@@ -83,7 +103,7 @@ Orbital strikes, Eagle strikes and everything else keep the game's own timing an
 2. Open the `ThirdPersonCamera_Installer` folder, run `ThirdPersonCamera_Installer.exe` and click **Install**.
 3. Play.
 
-No installer? Download `ThirdPersonCamera_v1.5_manual.zip` from the same release and copy its `contents` folder into your HELLDIVERS folder, replacing the 3 files. To remove it, verify the game files on Steam.
+No installer? Download `ThirdPersonCamera_v2.0_manual.zip` from the same release and copy its `contents` folder into your HELLDIVERS folder, replacing the 3 files. To remove it, verify the game files on Steam.
 
 The installer finds the game in any Steam library and closes it if it's open. It only changes your own game files and keeps a backup of every original in `Helldivers\contents\hd2cam_backup`. Run it again and click **Uninstall** to remove the mod. Verifying the game files on Steam also works.
 
