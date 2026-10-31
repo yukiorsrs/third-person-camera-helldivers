@@ -37,7 +37,7 @@ The top-down view is replaced by an over-the-shoulder camera with free aim on mo
 
 ## Controls
 
-Every key and button can be changed in **Esc > THIRD PERSON CONTROLS**.
+Every key and button can be changed in **Esc > Key bindings** (tabs for keyboard and controller, HD1 / HD2 STYLE buttons).
 
 | | Keyboard / mouse | Controller (HD2 layout) |
 |---|---|---|
@@ -66,11 +66,13 @@ Strikes keep the game's own damage: only what you see changes (the Railcannon lo
 ## Changelog
 
 **v2.1**
-- THIRD PERSON CONTROLS now looks and works like the game's own key binding screen
-- Controller: the binding screen no longer loops back to the Third Person Controls page
-- Ping works every time; pings and enemy names stay on their spot in the world
-- Fixed a crash when going back to the ship
-- Warning when a player with an older (or newer) version of the mod joins
+- Everything in the game's own key binding screen: keyboard / controller tabs, HD1 STYLE / HD2 STYLE layouts, PRESS / HOLD / DOUBLE TAP on each action (right click / RB), camera keys row
+- Ping works every time, stays on its spot, enemy names in the game's language
+- Spectate the closest squadmate when you die (smooth camera, free look)
+- Bigger Hellbomb and Shredder Missile blasts, lighter extra effects for orbitals and Eagles (can be turned off)
+- Co-op: mod version warning, no false "without the mod" warning while players load in, labels hidden when behind you
+- First person shows more of the arms with weapons without a scope
+- Fixes: crash when going back to the ship, controller binding screen loop
 
 **v2.0**
 - First person while aiming (mouse wheel / R3), with real scopes for scoped weapons
